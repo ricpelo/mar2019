@@ -9,10 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $nombre
+ * @property string $email
  * @property string $password
- * @property string $auth_key
- * @property string $telefono
- * @property string $poblacion
  */
 class Usuarios extends \yii\db\ActiveRecord
 {
@@ -30,9 +28,10 @@ class Usuarios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'password'], 'required'],
-            [['nombre', 'auth_key', 'telefono', 'poblacion'], 'string', 'max' => 255],
-            [['password'], 'string', 'max' => 60],
+            [['nombre', 'email', 'password'], 'required'],
+            [['nombre', 'email', 'password'], 'string', 'max' => 255],
+            [['email'], 'unique'],
+            [['nombre'], 'unique'],
         ];
     }
 
@@ -44,10 +43,8 @@ class Usuarios extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nombre' => 'Nombre',
+            'email' => 'Email',
             'password' => 'Password',
-            'auth_key' => 'Auth Key',
-            'telefono' => 'Teléfono',
-            'poblacion' => 'Población',
         ];
     }
 }

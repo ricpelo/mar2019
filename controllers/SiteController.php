@@ -2,13 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\Albumes;
+use app\models\Artistas;
+use app\models\ContactForm;
+use app\models\LoginForm;
+use app\models\Temas;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -61,7 +65,27 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $albumes = new ActiveDataProvider([
+            'query' => Albumes::find()->where('1=0'),
+        ]);
+        $temas = new ActiveDataProvider([
+            'query' => Temas::find()->where('1=0'),
+        ]);
+        $artistas = new ActiveDataProvider([
+            'query' => Artistas::find()->where('1=0'),
+        ]);
+        if (($cadena = Yii::$app->request->get('cadena', ''))) {
+            $albumes->query->where(['ilike', 'titulo', $cadena]);
+            $temas->query->where(['ilike', 'titulo', $cadena]);
+            $artistas->query->where(['ilike', 'nombre', $cadena]);
+        }
+
+        return $this->render('index', [
+            'albumes' => $albumes,
+            'artistas' => $artistas,
+            'temas' => $temas,
+            'cadena' => $cadena,
+        ]);
     }
 
     /**

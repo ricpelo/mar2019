@@ -2,52 +2,79 @@
 
 /* @var $this yii\web\View */
 
+use yii\bootstrap4\Html;
+use yii\grid\ActionColumn;
+use yii\grid\GridView;
+
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1>Busca lo que quieras</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Busca por artista, tema o álbum.</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p>
+            <?= Html::beginForm(['site/index'], 'get') ?>
+                <div class="form-group">
+                    <?= Html::textInput('cadena', $cadena, ['class' => 'form-control']) ?>
+                </div>
+                <div class="form-group">
+                    <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+                </div>
+            <?= Html::endForm() ?>
+        </p>
     </div>
 
     <div class="body-content">
-
-        <div class="row">
-            <div class="col-xl-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-info" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+        <?php if ($albumes->totalCount > 0): ?>
+            <h3>Álbumes</h3>
+            <div class="row">
+                <?= GridView::widget([
+                    'dataProvider' => $albumes,
+                    'columns' => [
+                        'titulo',
+                        [
+                            'class' => ActionColumn::class,
+                            'controller' => 'albumes',
+                            'template' => '{view}',
+                        ],
+                    ],
+                ]) ?>
             </div>
-            <div class="col-xl-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-info" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+        <?php endif ?>
+        <?php if ($artistas->totalCount > 0): ?>
+            <h3>Artistas</h3>
+            <div class="row">
+                <?= GridView::widget([
+                    'dataProvider' => $artistas,
+                    'columns' => [
+                        'nombre',
+                        [
+                            'class' => ActionColumn::class,
+                            'controller' => 'artistas',
+                            'template' => '{view}',
+                        ],
+                    ],
+                ]) ?>
             </div>
-            <div class="col-xl-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-outline-info" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+        <?php endif ?>
+        <?php if ($temas->totalCount > 0): ?>
+            <h3>Temas</h3>
+            <div class="row">
+                <?= GridView::widget([
+                    'dataProvider' => $temas,
+                    'columns' => [
+                        'titulo',
+                        [
+                            'class' => ActionColumn::class,
+                            'controller' => 'temas',
+                            'template' => '{view}',
+                        ],
+                    ],
+                ]) ?>
             </div>
-        </div>
-
+        <?php endif ?>
     </div>
 </div>
