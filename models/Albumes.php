@@ -97,4 +97,13 @@ class Albumes extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Temas::className(), ['id' => 'tema_id'])->viaTable('albumes_temas', ['album_id' => 'id']);
     }
+
+    public function getArtistasTemas()
+    {
+        return $this->hasMany(ArtistasTemas::class, ['tema_id' => 'id'])->via('temas');
+    }
+
+    public function getArtistas() {
+        return $this->hasMany(Artistas::class, ['id' => 'artista_id'])->via('artistasTemas');
+    }
 }
